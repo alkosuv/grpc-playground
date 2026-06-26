@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// Задает путь для импорта сгенерированного пакета в Go
+option go_package = "github.com/alkosuv/grpc-playgroud/error/api";
+
+package user;
+
+// Описание gRPC-сервиса
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+}
+
+// Описание структуры данных
+message CreateUserRequest {
+  string name = 1;
+  string login = 2;
+  string email = 3;
+  uint32 age = 4;
+}
+
+message CreateUserResponse {
+    string uuid = 1;
+}

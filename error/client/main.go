@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"log/slog"
 	"os"
 
@@ -46,7 +45,7 @@ func main() {
 				case *errorpb.InvalidArgument:
 					slog.Warn("InvalidArgument", "message", errorType.Message, "ditales", errorType.Ditales)
 				default:
-					log.Println("Unexpected error:", errorType)
+					slog.Error("Unexpected", "error", errorType)
 				}
 			}
 		} else {

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"log/slog"
 	"net"
 	"os"
@@ -72,10 +71,11 @@ func main() {
 	// 3. Регистрируем наш сервис на этом сервере
 	pb.RegisterErrorTestServiceServer(grpcServer, &apiService{})
 
-	log.Println("gRPC сервер запущен на порту :50051...")
+	slog.Info("gRPC сервер запущен на порту :50051...")
 
 	// 4. Запускаем сервер
 	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("Ошибка запуска сервера: %v", err)
+		slog.Error("Ошибка запуска сервера", "error", err)
+		os.Exit(0)
 	}
 }
