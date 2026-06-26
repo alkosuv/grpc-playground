@@ -1,3 +1,5 @@
+//go:build e2etest
+
 package e2etest
 
 import (
@@ -19,7 +21,7 @@ import (
 // Размер буфер должен быть, чем самое большое передаваемое сообщение
 const bufSize = 1024 * 1024
 
-func serverAndClientSetup(ctx context.Context, t *testing.T) (apipb.UserServiceClient, func()) {
+func serverAndClientSetup(t *testing.T) (apipb.UserServiceClient, func()) {
 	// 1. Создаем in-memory слушатель
 	// Заменяет сетевое соединение
 	lis := bufconn.Listen(bufSize)
@@ -64,7 +66,7 @@ func serverAndClientSetup(ctx context.Context, t *testing.T) (apipb.UserServiceC
 }
 
 func TestE2E_CreateUser(t *testing.T) {
-	client, cleanup := serverAndClientSetup(context.Background(), t)
+	client, cleanup := serverAndClientSetup(t)
 	defer cleanup()
 
 	t.Run("CreateUser – валидный запрос", func(t *testing.T) {
