@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+// Задает путь для импорта сгенерированного пакета в Go
+option go_package = "github.com/alkosuv/grpc-playgroud/error/api";
+
+package error;
+
+// Описание gRPC-сервиса
+service ErrorTestService {
+  rpc GetError (ErrorRequest) returns (ErrorResponse);
+}
+
+// Описание структуры данных
+message ErrorRequest {
+  string ErrorType = 1;
+}
+
+message ErrorResponse {}

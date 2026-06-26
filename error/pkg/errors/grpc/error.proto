@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+// Задает путь для импорта сгенерированного пакета в Go
+option go_package = "github.com/alkosuv/grpc-playgroud/error/pkg/errors/grpc";
+
+package error;
+
+message InvalidArgument {
+    string Message = 1;
+    repeated Ditale Ditales = 10;
+}
+
+message BadRequest {
+    string Message = 1;
+    repeated Ditale Ditales = 10;
+}
+
+message Ditale {
+   string desciption = 1;
+   string field = 2;
+   string value = 3;
+}
