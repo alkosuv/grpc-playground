@@ -43,6 +43,7 @@ func serverAndClientSetup(t *testing.T) (apipb.UserServiceClient, func()) {
 	}()
 
 	// 4. Настраиваем кастомный Dial для клиента, перенаправляющий трафик в bufconn
+	// passthrough://bufnet — это технический адрес (URL-схема), который используется для настройки внутренней сети.
 	conn, err := grpc.NewClient("passthrough://bufnet",
 		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) {
 			return listener.Dial()
