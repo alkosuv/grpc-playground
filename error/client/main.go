@@ -9,6 +9,7 @@ import (
 	errorpb "github.com/alkosuv/grpc-playgroud/error/pkg/errors/grpc"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 )
 
@@ -19,7 +20,9 @@ func main() {
 	handler := slog.NewJSONHandler(os.Stdout, opts)
 	slog.SetDefault(slog.New(handler))
 
-	conn, err := grpc.NewClient("localhost:50051", grpc.WithInsecure())
+	conn, err := grpc.NewClient("localhost:50051",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	if err != nil {
 		slog.Error("did not connect", "error", err)
 		return

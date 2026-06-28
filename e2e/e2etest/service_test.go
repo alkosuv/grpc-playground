@@ -24,7 +24,7 @@ const bufSize = 1024 * 1024
 func serverAndClientSetup(t *testing.T) (apipb.UserServiceClient, func()) {
 	// 1. Создаем in-memory слушатель
 	// Заменяет сетевое соединение
-	lis := bufconn.Listen(bufSize)
+	listener := bufconn.Listen(bufSize)
 
 	// 2. Инициализируем и регистрируем реальный gRPC сервер
 	grpcServer := grpc.NewServer(
@@ -37,7 +37,7 @@ func serverAndClientSetup(t *testing.T) (apipb.UserServiceClient, func()) {
 
 	// 3. Запускаем сервер в отдельной горутине
 	go func() {
-		if err := grpcServer.Serve(lis); err != nil && err != grpc.ErrServerStopped {
+		if err := grpcServer.Serve(listener); err != nil && err != grpc.ErrServerStopped {
 			t.Errorf("Server exited with error: %v", err)
 		}
 	}()
@@ -45,7 +45,7 @@ func serverAndClientSetup(t *testing.T) (apipb.UserServiceClient, func()) {
 	// 4. Настраиваем кастомный Dial для клиента, перенаправляющий трафик в bufconn
 	conn, err := grpc.NewClient("passthrough://bufnet",
 		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) {
-			return lis.Dial()
+			return listener.Dial()
 		}),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
